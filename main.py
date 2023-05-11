@@ -51,5 +51,23 @@ def proxy_cache_vcard():
         data = json.load(file)
         return jsonify(data)    
 
+@app.route('/update_cache')
+def update_cache():
+    json_cache = 'cache.json'
+    vcard_cache = 'cacheVcard.json'
+
+    # Update the cache JSON files
+    url = "http://localhost:6438/contacts"
+    json_data = requests.get(url).json()
+    with open(json_cache, "w") as file:
+        json.dump(json_data, file)
+
+    url = "http://localhost:6438/contacts/vcard"
+    vcard_data = requests.get(url).json()
+    with open(vcard_cache, "w") as file:
+        json.dump(vcard_data, file)
+
+    return 'Cache updated'      
+
 if __name__ == '__main__': 
     app.run(host='0.0.0.0', port=5555)  
