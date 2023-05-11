@@ -1,8 +1,10 @@
 import json
 import requests
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 def fetch_data(*, update: bool = False, json_cache:str, url:str ):
     if update:
@@ -27,8 +29,8 @@ def fetch_data(*, update: bool = False, json_cache:str, url:str ):
 def hello():
     return 'Velkommen til vår cache'
 
-@app.route('/cacheJson')
-def serve_cache_json():
+@app.route('/proxy/cacheJson')
+def proxy_cache_json():
     url = "http://localhost:6438/contacts"
     json_cache = 'cache.json'
     data: dict = fetch_data(update=False,
@@ -38,8 +40,8 @@ def serve_cache_json():
         data = json.load(file)
         return jsonify(data)
     
-@app.route('/cacheVcard')
-def serve_cache_vcard():
+@app.route('/proxy/cacheVcard')
+def proxy_cache_vcard():
     url = "http://localhost:6438/contacts/vcard"
     json_cache = 'cacheVcard.json'
     data: dict = fetch_data(update=False,
