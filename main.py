@@ -1,7 +1,11 @@
 import json
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+
+API_KEY1 = "json"
+API_KEY2 = "vcard"
 
 app = Flask(__name__)
 CORS(app)
@@ -29,27 +33,42 @@ def fetch_data(*, update: bool = False, json_cache:str, url:str ):
 def hello():
     return 'Velkommen til vår cache'
 
-@app.route('/proxy/cacheJson')
+@app.route('/proxy/cacheJson', methods=['POST'])
 def proxy_cache_json():
+    # Add the password validation logic here
+    password = request.json.get('password')
+
+    if password != API_KEY1:
+        print("Wrong API key")
+        return {'message': 'Invalid API key'}, 401
+
     url = "http://localhost:6438/contacts"
-    json_cache = 'cache.json'
-    data: dict = fetch_data(update=False,
-                            json_cache=json_cache,
-                            url=url)
+    json_cache = 'cacheJson.json'
+    data: dict = fetch_data(update=False, json_cache=json_cache, url=url)
+
     with open(json_cache, 'r') as file:
         data = json.load(file)
-        return jsonify(data)
-    
-@app.route('/proxy/cacheVcard')
+
+    return jsonify(data)
+
+
+@app.route('/proxy/cacheVcard', methods=['POST'])
 def proxy_cache_vcard():
+    # Add the password validation logic here
+    password = request.json.get('password')
+
+    if password != API_KEY2:
+        print("Wrong API key")
+        return {'message': 'Invalid API key'}, 401
+
     url = "http://localhost:6438/contacts/vcard"
     json_cache = 'cacheVcard.json'
-    data: dict = fetch_data(update=False,
-                            json_cache=json_cache,
-                            url=url)
+    data: dict = fetch_data(update=False, json_cache=json_cache, url=url)
+
     with open(json_cache, 'r') as file:
         data = json.load(file)
-        return jsonify(data)    
+
+    return jsonify(data)
 
 @app.route('/update_cache')
 def update_cache():
