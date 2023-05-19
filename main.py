@@ -76,7 +76,7 @@ def proxy_cache_vcard():
 
 @app.route("/update_cache")
 def update_cache():
-    json_cache = "cache.json"
+    json_cache = "cacheJson.json"
     vcard_cache = "cacheVcard.json"
 
     # Update the cache JSON files
