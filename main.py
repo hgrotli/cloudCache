@@ -38,7 +38,7 @@ def proxy_cache_json():
     if password != API_KEY1:
         print("Wrong API key")
         return {"message": "Invalid API key"}, 401
-    url = "http://localhost:6438/contacts"
+    url = "https://flask-production-eba1.up.railway.app/contacts"
     json_cache = "cacheJson.json"
     data: dict = fetch_data(update=False, json_cache=json_cache, url=url)
     with open(json_cache, "r") as file:
@@ -52,7 +52,7 @@ def proxy_cache_vcard():
     if password != API_KEY2:
         print("Wrong API key")
         return {"message": "Invalid API key"}, 401
-    url = "http://localhost:6438/contacts/vcard"
+    url = "https://flask-production-eba1.up.railway.app/contacts/vcard"
     json_cache = "cacheVcard.json"
     data: dict = fetch_data(update=False, json_cache=json_cache, url=url)
     with open(json_cache, "r") as file:
@@ -65,11 +65,11 @@ def update_cache():
     vcard_cache = "cacheVcard.json"
 
     # Update the cache JSON files
-    url = "http://localhost:6438/contacts"
+    url = "https://flask-production-eba1.up.railway.app/contacts"
     json_data = requests.get(url).json()
     with open(json_cache, "w") as file:
         json.dump(json_data, file)
-    url = "http://localhost:6438/contacts/vcard"
+    url = "https://flask-production-eba1.up.railway.app/vcard"
     vcard_data = requests.get(url).json()
     with open(vcard_cache, "w") as file:
         json.dump(vcard_data, file)
