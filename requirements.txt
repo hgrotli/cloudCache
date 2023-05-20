@@ -10,3 +10,4 @@ vobject
 pymongo
 certifi
 bson
+requests
