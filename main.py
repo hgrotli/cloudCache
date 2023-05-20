@@ -69,7 +69,7 @@ def update_cache():
     json_data = requests.get(url).json()
     with open(json_cache, "w") as file:
         json.dump(json_data, file)
-    url = "https://flask-production-eba1.up.railway.app/vcard"
+    url = "https://flask-production-eba1.up.railway.app/contacts/vcard"
     vcard_data = requests.get(url).json()
     with open(vcard_cache, "w") as file:
         json.dump(vcard_data, file)
